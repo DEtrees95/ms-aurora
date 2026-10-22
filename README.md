@@ -13,7 +13,7 @@ Enthalten sind Bauplan, Farblegende und ein vorsichtiges CraftScript. **Keine fe
 | Weiße Bauebene | Y=64 | Y=64 |
 | Farbige Linien oben | Y=65 | Y=65 |
 | Wasseroberfläche | im alten Text ungenau | oberste Wasserblöcke Y=63 |
-| Kielhilfe | alte X/Z-Ausdehnung unbestätigt | Y=52, Z=−1 und 0 |
+| Kielhilfe | Y=52, X −210…200, Z0…1 | Y=52, Z=−1 und 0 |
 
 Bug: **+X**, Heck: **−X**, Breite: Z. Länge immer `Maximum − Minimum + 1`.
 270/450 = 60 %, 60/100 = 60 %: **40 % kürzer und schmaler**, aber 64 % weniger Grundfläche (16.200 statt 45.000 Blöcke). Die gesamte Minecraft-Welt wird dadurch nicht kleiner. Ob 270 m für eure Yacht passend sind, ist eine Designentscheidung, keine aus einem Vorbild abgeleitete Maßstabsbehauptung.
@@ -35,6 +35,8 @@ Alle Bereiche einschließlich Endpunkten, alle Materialien `minecraft:*_concrete
 | 5 | Orange / `orange_concrete` | Beginn der Bugverjüngung | X96, Y65, Z −30…29 |
 | 6 | Gelb / `yellow_concrete` | Außenlinien des Hauptkörpers | X −135…95, Y65, Z −30 sowie 29 |
 | 7 | Schwarz / `black_concrete` | Doppelte Kiel-Längshilfe | X −135…134, Y52, Z −1…0 |
+
+Die vollständigen Koordinaten beider Varianten und der alte Befehlsstand stehen in [Koordinaten und Farblegende](docs/KOORDINATEN.md). Die alten Befehle belegen den Plan, keine Vermessung des tatsächlichen Weltstands.
 
 X96 ist ein neuer, gerundeter Designwert in Anlehnung an den alten Taper-Beginn X160; keine bestätigte alte Markierung. Der Bugabschnitt X96…134 umfasst 39 Reihen. Noch keine schräge Rumpfkontur: das weiße Rechteck bleibt bis zur späteren Rumpfformung vollständig bestehen.
 
@@ -63,7 +65,7 @@ Lokale Sicherheitsprüfungen: `node tests/safety.cjs`. Diese simulieren die Worl
 
 ## Veröffentlichung
 
-Dateien und Sicherheitsprüfungen sind für die Veröffentlichung auf GitHub vorbereitet. [Veröffentlichung und Datenschutz](docs/GITHUB.md).
+Das bestehende öffentliche Repository ist [DEtrees95/ms-aurora](https://github.com/DEtrees95/ms-aurora). [Veröffentlichung und Datenschutz](docs/GITHUB.md).
 
 ## Validierung und Rechte
 

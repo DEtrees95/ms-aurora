@@ -20,7 +20,7 @@ Alle Positionen werden vorab geprüft, der WorldEdit-Änderungsgrenzwert wird ko
 
 ## Alten Plan vervollständigen
 
-`CFG.oldReviewed` bleibt standardmäßig `false`; die Migration ist damit gesperrt. Der verfügbare alte Gesprächsauszug bestätigt nur die weiße Fläche und die Koordinaten von hellblauer Linie, grauem Heck und rotem Bug. Orange X160 war vorgeschlagen; genaue alte gelbe Linien und Kiel-X/Z sind nicht bestätigt.
+`CFG.oldReviewed` bleibt standardmäßig `false`; die Migration ist damit gesperrt. Der frühere Chat enthält Befehle für alle sieben Markierungen; siehe [vollständigen alten Befehlsstand](KOORDINATEN.md). Das belegt den vorgesehenen Entwurf, aber nicht, welche Befehle tatsächlich ausgeführt wurden. `CFG.old` enthält weiterhin nur vier Einträge. Die drei fehlenden Markierungen dürfen erst nach Prüfung der Weltkopie ergänzt werden.
 
 1. In einer Weltkopie **alle sieben** tatsächlichen Markierungen vermessen. Auch prüfen, ob die ursprüngliche 145 × 49-Fläche außerhalb der dokumentierten alten Fläche Reste hinterließ. Nicht belegte Reste werden nicht automatisch gelöscht.
 2. In `CFG.old` ausschließlich tatsächliche Hilfspositionen ergänzen, als inklusive Quader `[x1,y1,z1,x2,y2,z2,"material"]`. Keine großen Leerraum-Quader. Spätere Einträge überschreiben frühere an Schnittpunkten; tatsächliche Endfarben abbilden.
@@ -30,6 +30,30 @@ Alle Positionen werden vorab geprüft, der WorldEdit-Änderungsgrenzwert wird ko
 6. Nach Backup `/cs aurora apply migrate BACKUP` ausführen. Der Text BACKUP ist eine bewusste Bedienbestätigung; das Skript erstellt oder prüft selbst keine Sicherungsdatei.
 
 Ein unvollständiger Altplan kann alte Markierungen außerhalb des neuen Ziels zurücklassen. Das Skript behauptet nicht, sie erkannt zu haben. Darum muss die menschliche Prüfung vor der Freigabe wirklich vollständig sein.
+
+## Alle sieben Markierungen gemeinsam ersetzen
+
+Die empfohlene Reihenfolge lautet: Backup → Weltkopie → alten Bestand vollständig vermessen → Altplan ergänzen → Vorschau → Ausführung → Sichtprüfung → Undo-Test. Die neue Grundfläche allein überdeckt die alte nur teilweise; ohne gezielte Bereinigung bleiben die großen Außenbereiche und der alte Kiel stehen.
+
+Wenn der Weltbestand exakt dem alten Chatplan entspricht, die folgenden vier Einträge **nach** den vorhandenen vier Einträgen in `CFG.old` ergänzen (Komma nach dem bisherigen letzten Eintrag erforderlich):
+
+```javascript
+[160,65,-49,160,65,50,"orange_concrete"],
+[-170,65,-49,160,65,-49,"yellow_concrete"],
+[-170,65,50,160,65,50,"yellow_concrete"],
+[-210,52,0,200,52,1,"black_concrete"]
+```
+
+Die Reihenfolge entspricht dem damaligen Bauablauf: Gelb gewinnt an den beiden Enden der orangefarbenen Linie. Nur bei tatsächlich geprüftem Gesamtbestand `oldReviewed: true` setzen, Weltkennung binden und in der Weltkopie ausführen:
+
+```text
+/cs aurora preview migrate
+/cs aurora apply migrate BACKUP
+```
+
+Die Vorschau prüft Materialien und meldet eine Änderungszahl; sie ist keine grafische Vorschau und bestätigt keine Herkunft. Nach apply prüfen: neue weiße Fläche genau 270×60, alle sieben Farben nach neuer Kreuzungsregel, alte Außenreste auf Y64/65 weg, alter Kiel außerhalb des neuen Plans wieder Wasser, umliegende Bauten unverändert. Danach als derselbe Spieler `//undo` testen und mit dem gesicherten Ausgangszustand vergleichen. Erst nach erfolgreichem Test dieselbe Prüfung und Sicherung am Produktionsstand durchführen. Ein zwischenzeitlich geänderter Bestand muss erneut geprüft werden.
+
+Kein pauschales `//replace` aller sieben Farben und kein `//set air` über den gesamten alten Quader: damit könnten echte Bauten oder Wasser entfernt werden. Das Skript ersetzt alle geprüften Hilfen in einem Aufruf; WorldEdit besitzt keinen allgemeinen Befehl, der beliebige alte Markierungen automatisch ihrer Bedeutung nach erkennt und korrekt auf 60 % neu plant.
 
 ## Undo und Fehler
 
