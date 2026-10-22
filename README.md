@@ -1,0 +1,72 @@
+# MS Aurora – Bauplanung für Minecraft
+
+Deutsches Mitbauer-Repository für Minecraft Java **1.21.1 / Fabric / WorldEdit 7.3.x**.
+Enthalten sind Bauplan, Farblegende und ein vorsichtiges CraftScript. **Keine fertige Yacht und kein Welt-Download.** Die 270 × 60-Variante ist ein vorgeschlagener neuer Plan; die bestehende Welt wurde nicht verändert.
+
+## Maße und Orientierung
+
+| Eigenschaft | Alter Entwurf | Neuer Plan |
+|---|---|---|
+| Länge × Breite | 450 × 100 | **270 × 60** |
+| X, einschließlich | −224 … 225 | **−135 … 134** |
+| Z, einschließlich | −49 … 50 | **−30 … 29** |
+| Weiße Bauebene | Y=64 | Y=64 |
+| Farbige Linien oben | Y=65 | Y=65 |
+| Wasseroberfläche | im alten Text ungenau | oberste Wasserblöcke Y=63 |
+| Kielhilfe | alte X/Z-Ausdehnung unbestätigt | Y=52, Z=−1 und 0 |
+
+Bug: **+X**, Heck: **−X**, Breite: Z. Länge immer `Maximum − Minimum + 1`.
+270/450 = 60 %, 60/100 = 60 %: **40 % kürzer und schmaler**, aber 64 % weniger Grundfläche (16.200 statt 45.000 Blöcke). Die gesamte Minecraft-Welt wird dadurch nicht kleiner. Ob 270 m für eure Yacht passend sind, ist eine Designentscheidung, keine aus einem Vorbild abgeleitete Maßstabsbehauptung.
+
+Bei geraden Abmessungen liegt die Mitte zwischen Blockreihen. Die neuen Blockzentren haben den Mittelwert −0,5; ihre tatsächliche Baufläche erstreckt sich von X −135 bis 135 und Z −30 bis 30 und ist geometrisch um den Weltursprung zentriert. Die alte Auswahl hatte Blockindex-Mittelwerte +0,5 und eine geometrische Mitte bei +1. Die neue Auswahl ist deshalb nicht nur eine Skalierung um die alte Mitte.
+
+Y=63 bezeichnet den Blockindex der obersten Wasserschicht; deren obere Kante liegt geometrisch bei Y=64. Die weiße Fläche ist **eine Lage dick**, kein Deckstapel und kein fertiger Schiffsboden. Die Kielhilfe liegt 12 Blockindizes unter der Bauebene; die vertikale Planung wird nicht automatisch um 40 % verkleinert.
+
+## Sieben Markierungen
+
+Alle Bereiche einschließlich Endpunkten, alle Materialien `minecraft:*_concrete`.
+
+| Nr. | Farbe / Block | Bedeutung | Neue Koordinaten |
+|---|---|---|---|
+| 1 | Weiß / `white_concrete` | Rechteckige Planungsfläche | X −135…134, Y64, Z −30…29 |
+| 2 | Hellblau / `light_blue_concrete` | Doppelte Längsmittellinie | X −135…134, Y65, Z −1…0 |
+| 3 | Grau / `gray_concrete` | Heckkante | X −135, Y65, Z −30…29 |
+| 4 | Rot / `red_concrete` | Bugspitze als Referenz | X134, Y65, Z −1…0 |
+| 5 | Orange / `orange_concrete` | Beginn der Bugverjüngung | X96, Y65, Z −30…29 |
+| 6 | Gelb / `yellow_concrete` | Außenlinien des Hauptkörpers | X −135…95, Y65, Z −30 sowie 29 |
+| 7 | Schwarz / `black_concrete` | Doppelte Kiel-Längshilfe | X −135…134, Y52, Z −1…0 |
+
+X96 ist ein neuer, gerundeter Designwert in Anlehnung an den alten Taper-Beginn X160; keine bestätigte alte Markierung. Der Bugabschnitt X96…134 umfasst 39 Reihen. Noch keine schräge Rumpfkontur: das weiße Rechteck bleibt bis zur späteren Rumpfformung vollständig bestehen.
+
+**Kreuzungen:** Weiß liegt separat auf Y64, Schwarz auf Y52. Auf Y65 gewinnt Orange gegenüber Hellblau, Grau gegenüber Hellblau/Gelb, Rot gegenüber Hellblau. Gelb endet vor Orange. Dadurch ist die hellblaue Linie an Heck, Orange und Bug bewusst unterbrochen. Ein Block kann nur eine Farbe haben.
+
+## Sicher starten
+
+1. [Sicherheits- und Backup-Anleitung](docs/SICHERHEIT.md) lesen. Zuerst in einer vollständigen Weltkopie testen.
+2. [Technik und Installation](docs/TECHNIK.md) beachten; CraftScripts benötigen einen zusätzlich erreichbaren Rhino-Motor.
+3. `craftscripts/aurora.js` in den konfigurierten WorldEdit-CraftScript-Ordner kopieren (üblicherweise `config/WorldEdit/craftscripts/`). Als berechtigter Spieler in der Oberwelt ausführen.
+4. Für eine **leere neue Baufläche** zuerst `/cs aurora preview fresh`; die ausgegebene Weltkennung prüfen und exakt in `CFG.worldId` eintragen. Danach nach Backup `/cs aurora apply fresh BACKUP`.
+5. Für die **bereits markierte alte Fläche** ist `fresh` absichtlich gesperrt, sobald Beton im Ziel liegt. Erst den alten Plan lokal vervollständigen und prüfen, dann `/cs aurora preview migrate` und `/cs aurora apply migrate BACKUP`. Siehe Sicherheit.
+
+Ein `apply`-Aufruf führt den gesamten freigegebenen Plan aus. Vorschau ist ein zusätzlicher, schreibfreier Schritt. Standard ohne Argumente: Vorschau der leeren Baufläche. **Nicht blind `/.s` benutzen**, weil dies den letzten Aufruf wiederholen kann.
+
+Das Skript ist absichtlich nicht beliebig wiederholbar: vorhandene neue Betonmarkierungen führen bei `fresh` zum Abbruch. Bei einer beschädigten, bereits bebauten Yacht nicht einfach alle sieben Betonfarben freigeben! Stattdessen Weltkopie/Undo wiederherstellen oder einen neuen, einzeln geprüften Bestandsplan erstellen.
+
+## Mitbauen und Änderungen vorschlagen
+
+- In Issues Bauabschnitt, Koordinaten, Minecraft-/Fabric-/WorldEdit-Version und Screenshots angeben.
+- Rumpf, Aufbauten, Innenräume und Technik getrennt planen; Bauabschnitte vorab abstimmen.
+- Änderungen an Koordinaten und Skript gemeinsam als Pull Request einreichen; Tests und Sichtprüfung beilegen.
+- Weltstände und Backups außerhalb von Git sichern. Keine Spielerdateien, Zugangsdaten, Serveradressen oder vollständigen Welten versehentlich hochladen.
+
+Lokale Sicherheitsprüfungen: `node tests/safety.cjs`. Diese simulieren die WorldEdit-Schnittstelle; sie ersetzen keinen Test im Minecraft-Server.
+
+## Veröffentlichung
+
+Dateien und Sicherheitsprüfungen sind für die Veröffentlichung auf GitHub vorbereitet. [Veröffentlichung und Datenschutz](docs/GITHUB.md).
+
+## Validierung und Rechte
+
+Koordinaten, Konfliktabbruch, Schreibgrenzen und Vorschau werden automatisiert im Schnittstellenmodell geprüft. **Kein echter Fabric-/Rhino- oder Minecraft-Lauf erfolgt.** Vor Produktion ist der Integrationstest in der Weltkopie erforderlich. Keine Zusage einer fehlerfreien Transaktion bei Laufzeitfehlern.
+
+Keine Lizenzentscheidung für eure Map vorweggenommen. Vor Weiterverteilung oder Übernahme fremder Assets die Rechte klären und eine passende LICENSE ergänzen. Minecraft und WorldEdit gehören ihren jeweiligen Rechteinhabern; inoffizielles Community-Projekt.

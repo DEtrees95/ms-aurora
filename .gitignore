@@ -1,0 +1,22 @@
+# Never commit worlds, private server files or credentials.
+world/
+world_*/
+backups/
+logs/
+mods/
+*.mca
+*.dat
+*.dat_old
+*.jar
+*.schem
+*.zip
+server.properties
+usercache.json
+whitelist.json
+ops.json
+banned-*.json
+.env
+.env.*
+node_modules/
+.DS_Store
+Thumbs.db
