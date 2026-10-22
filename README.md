@@ -1,6 +1,8 @@
 # MS Aurora – Bauplanung für Minecraft
 
 Deutsches Mitbauer-Repository für Minecraft Java **1.21.1 / Fabric / WorldEdit 7.3.x**.
+
+**Wir bauen gemeinsam auf dem vom Projektinhaber eingerichteten MS-Aurora-Server. Mitbauer sollen dort ausprobieren und mitbauen. Eine eigene Welt ist dafür nicht erforderlich.** [Server, Bauhilfen und Importbefehle](docs/SERVER-UND-IMPORT.md).
 Enthalten sind Bauplan, Farblegende und ein vorsichtiges CraftScript. **Keine fertige Yacht und kein Welt-Download.** Die 270 × 60-Variante ist ein vorgeschlagener neuer Plan; die bestehende Welt wurde nicht verändert.
 
 ## Maße und Orientierung
