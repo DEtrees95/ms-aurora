@@ -1,0 +1,79 @@
+name: Publish Poison and Scorpion Fix V2
+
+on:
+  push:
+    branches:
+      - fix/wathe-poison102-official-scorpion
+    paths:
+      - .github/workflows/publish-poison-scorpion-v2.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download last verified combined-fix build
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          gh run download 40018124746 \
+            --repo "${GITHUB_REPOSITORY}" \
+            --name "WATHE-Poison-102-and-Scorpion-V2" \
+            --dir dist
+
+      - name: Check that both fixes are in the installable JAR
+        run: |
+          python3 - <<'PY'
+          import json
+          import zipfile
+          from pathlib import Path
+
+          jar = Path("dist/WatheExtended-4.0.0-beta.1-h1.4-Poison102-ScorpionFix-V2.jar")
+          assert jar.is_file() and jar.stat().st_size > 1000000, "Build JAR missing"
+          with zipfile.ZipFile(jar) as mod:
+              files = set(mod.namelist())
+              cfg = json.loads(mod.read("watheextended.mixins.json"))
+              mixins = set(cfg["mixins"])
+              assert "fix.InfectedNullGuardMixin" not in mixins, "Poison reset fix missing"
+              assert "fix.ScorpionPoisonerOrderMixin" in mixins, "Scorpion fix missing"
+              assert ("cat/rezelyn/watheextended/mixin/fix/ScorpionPoisonerOrderMixin.class" in files), "Scorpion class missing"
+              assert not {"fix.RealPoisonTimerGuardMixin", "fix.PoisonedFoodUseMixin", "fix.PoisonProbeInitMixin"} & mixins, "Old experimental patches detected"
+          print(f"Verified combined fix JAR: {jar.name}, {jar.stat().st_size} bytes")
+          PY
+          sha256sum dist/*.jar > dist/SHA256SUMS.txt
+
+      - name: Publish public GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          TAG="wathe-poison-scorpion-fix-v2"
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "Release already exists; refusing to overwrite existing downloads."
+            exit 1
+          fi
+          cat > release-notes.md <<'EOF'
+          Community test build for Minecraft 1.21.1 (Fabric), based on Wathe Extended 4.0.0-beta.1-h1.4.
+
+          Fixes:
+          - **Poison:** Poisoned food and drinks no longer have their poison timers immediately cleared.
+          - **Scorpion:** Scorpion traps in beds keep the poisoner's identity until the poison has been applied.
+
+          **Installation:** Stop the server, back up the current Wathe Extended JAR, replace it in the mods folder, and restart. Do not keep two Wathe Extended JARs installed at the same time.
+
+          This is an independent community test build; verify compatibility before using it on a production server.
+          EOF
+          gh release create "$TAG" \
+            --repo "$GITHUB_REPOSITORY" \
+            --target a8d03510ef3583b9def20ef3aa0e30341f4b2a8e \
+            --title "Wathe Extended 4.0.0-beta.1-h1.4 | Poison + Scorpion Fix V2" \
+            --notes-file release-notes.md \
+            --prerelease \
+            dist/WatheExtended-4.0.0-beta.1-h1.4-Poison102-ScorpionFix-V2.jar \
+            dist/SHA256SUMS.txt
