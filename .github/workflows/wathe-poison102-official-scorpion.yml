@@ -67,7 +67,7 @@ jobs:
           assert "fix.ScorpionPoisonerOrderMixin" not in d["mixins"]
           d["mixins"].append("fix.ScorpionPoisonerOrderMixin")
           assert len(d["mixins"]) == len(set(d["mixins"]))
-          p.write_text(json.dumps(d, indent=2) + "\\n")
+          p.write_text(json.dumps(d, indent=2))
           print("Applied official poison fix and scorpion poisoner fix only.")
           PY
 
@@ -90,5 +90,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: WATHE-Poison-102-and-Scorpion-V2
-          path: dist/WatheExtended-4.0.0-beta.1-h1.4-Poison102-OfficialFix.jar
+          path: dist/WatheExtended-4.0.0-beta.1-h1.4-Poison102-ScorpionFix-V2.jar
           if-no-files-found: error
