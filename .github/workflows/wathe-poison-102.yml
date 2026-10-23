@@ -1,0 +1,58 @@
+name: WATHE poison hotfix test build
+
+on:
+  push:
+    branches:
+      - fix/wathe-poison-102-test
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout test patches
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Download fixed upstream source tag
+        run: git clone --depth 1 --branch 4.0.0-beta.1-h1.4 https://github.com/rezelyn/Wathe-Extended.git wathe-src
+
+      - name: Apply experimental poison patches
+        run: |
+          mkdir -p wathe-src/src/main/java/cat/rezelyn/watheextended/mixin/fix
+          cp patches/wathe-poison-102/*.java wathe-src/src/main/java/cat/rezelyn/watheextended/mixin/fix/
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("wathe-src/src/main/resources/watheextended.mixins.json")
+          d=json.loads(p.read_text())
+          extra=["fix.RealPoisonTimerGuardMixin","fix.PoisonedBedOrderMixin","fix.PoisonedFoodFallbackMixin"]
+          for item in extra:
+              assert item not in d["mixins"], item
+              d["mixins"].append(item)
+          p.write_text(json.dumps(d,indent=2)+"\n")
+          assert len(d["mixins"])==len(set(d["mixins"]))
+          PY
+
+      - name: Build remapped Minecraft mod
+        working-directory: wathe-src
+        run: |
+          chmod +x ./gradlew
+          ./gradlew --no-daemon clean build
+
+      - name: Upload executable JAR (not sources)
+        uses: actions/upload-artifact@v4
+        with:
+          name: watheextended-poison-102-experimental
+          path: |
+            wathe-src/build/libs/*.jar
+            !wathe-src/build/libs/*-sources.jar
+            !wathe-src/build/libs/*-dev.jar
+          if-no-files-found: error
