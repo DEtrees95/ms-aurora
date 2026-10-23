@@ -9,6 +9,7 @@ import dev.doctor4t.wathe.index.WatheDataComponentTypes;
 import java.util.UUID;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -26,6 +27,10 @@ public abstract class PoisonedFoodUseMixin {
       World world, LivingEntity user, Operation<ItemStack> original) {
     ItemStack stack = (ItemStack) (Object) this;
     String source = stack.getOrDefault(WatheDataComponentTypes.POISONER, null);
+    if (!world.isClient && stack.isOf(Items.APPLE) && user instanceof ServerPlayerEntity player) {
+      WatheExtended.LOGGER.warn("[Poison102] V3 apple finishUsing: player={}, tagged={}",
+          player.getName().getString(), source != null);
+    }
     if (source == null || world.isClient || !(user instanceof ServerPlayerEntity player)) {
       return original.call(world, user);
     }
@@ -37,7 +42,7 @@ public abstract class PoisonedFoodUseMixin {
 
     if (GameWorldComponent.KEY.get(world).getGameStatus()
         != GameWorldComponent.GameStatus.ACTIVE) {
-      WatheExtended.LOGGER.info("[Poison102] Poison-tagged food consumed outside ACTIVE round");
+      WatheExtended.LOGGER.info("[Poison102] V3 poisoned food consumed outside ACTIVE round");
       return result;
     }
 
