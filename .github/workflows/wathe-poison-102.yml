@@ -33,7 +33,7 @@ jobs:
           from pathlib import Path
           p=Path("wathe-src/src/main/resources/watheextended.mixins.json")
           d=json.loads(p.read_text())
-          extra=["fix.RealPoisonTimerGuardMixin","fix.PoisonedBedOrderMixin","fix.PoisonedFoodFallbackMixin"]
+          extra=["fix.RealPoisonTimerGuardMixin","fix.PoisonedBedOrderMixin","fix.PoisonedFoodFallbackMixin","fix.PoisonedFoodUseMixin"]
           for item in extra:
               assert item not in d["mixins"], item
               d["mixins"].append(item)
@@ -50,7 +50,7 @@ jobs:
       - name: Upload executable JAR (not sources)
         uses: actions/upload-artifact@v4
         with:
-          name: watheextended-poison-102-experimental
+          name: watheextended-poison-102-test-v2
           path: |
             wathe-src/build/libs/*.jar
             !wathe-src/build/libs/*-sources.jar
