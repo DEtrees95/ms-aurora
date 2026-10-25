@@ -1,0 +1,145 @@
+name: MS Aurora Bed Wakeup Test V1
+
+on:
+  push:
+    branches:
+      - fix/wathe-bed-wakeup-test-v1
+    paths:
+      - patches/wathe-bed-wakeup/**
+      - .github/workflows/wathe-bed-wakeup-test-v1.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout MS Aurora test sources
+        uses: actions/checkout@v4
+
+      - name: Prepare Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Obtain target game module source
+        run: |
+          git clone --depth 1 --branch 4.0.0-beta.1-h1.4 \
+            https://github.com/rezelyn/Wathe-Extended.git wathe-src
+
+      - name: Apply existing poison compatibility changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 \
+            "https://github.com/rezelyn/Wathe-Extended/commit/e4184bdcb6b51406b92ceaf767123287152b529f.patch" \
+            --output poison-compatibility.patch
+          git -C wathe-src apply --check ../poison-compatibility.patch
+          git -C wathe-src apply ../poison-compatibility.patch
+          cp patches/wathe-poison102-combined/ScorpionPoisonerOrderMixin.java \
+            wathe-src/src/main/java/cat/rezelyn/watheextended/mixin/fix/
+
+      - name: Install preparing-phase bed wakeup patch
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp patches/wathe-bed-wakeup/RoundStartBedWakeMixin.java \
+            wathe-src/src/main/java/cat/rezelyn/watheextended/mixin/fix/
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          path = Path("wathe-src/src/main/resources/watheextended.mixins.json")
+          data = json.loads(path.read_text())
+          patches = ["fix.ScorpionPoisonerOrderMixin", "fix.RoundStartBedWakeMixin"]
+          for patch in patches:
+              assert patch not in data["mixins"], f"Duplicate mixin: {patch}"
+              data["mixins"].append(patch)
+          assert "fix.InfectedNullGuardMixin" not in data["mixins"], "Obsolete reset hook still enabled"
+          assert len(data["mixins"]) == len(set(data["mixins"]))
+          path.write_text(json.dumps(data, indent=2) + "\n")
+          PY
+
+      - name: Compile remapped Fabric game mod
+        working-directory: wathe-src
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon clean build
+
+      - name: Verify built patch and package JAR
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          cp wathe-src/build/libs/WatheExtended-4.0.0-beta.1-h1.4.jar \
+            dist/WatheExtended-4.0.0-beta.1-h1.4-BedWake-Test-V1.jar
+          python3 - <<'PY'
+          import json
+          import zipfile
+          from pathlib import Path
+          jar = Path("dist/WatheExtended-4.0.0-beta.1-h1.4-BedWake-Test-V1.jar")
+          assert jar.stat().st_size > 1_000_000, "Unexpectedly small JAR"
+          with zipfile.ZipFile(jar) as z:
+              items = set(z.namelist())
+              mixins = json.loads(z.read("watheextended.mixins.json"))["mixins"]
+              assert "fix.RoundStartBedWakeMixin" in mixins
+              assert "fix.ScorpionPoisonerOrderMixin" in mixins
+              assert "fix.InfectedNullGuardMixin" not in mixins
+              assert "cat/rezelyn/watheextended/mixin/fix/RoundStartBedWakeMixin.class" in items
+              assert "cat/rezelyn/watheextended/mixin/fix/ScorpionPoisonerOrderMixin.class" in items
+          print(f"Patch is compiled and registered: {jar.name}")
+          PY
+          sha256sum dist/*.jar > dist/SHA256SUMS.txt
+
+      - name: Save test build in Actions artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ms-aurora-bed-wakeup-test-v1
+          path: dist/
+          if-no-files-found: error
+
+      - name: Publish prerelease in MS Aurora only
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          TAG="ms-aurora-bed-wakeup-test-v1"
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "Test release already exists; will not overwrite an existing binary."
+            exit 1
+          fi
+          cat > release-notes.md <<'EOF'
+          **Experimental community test build for Minecraft 1.21.1 Fabric.**
+          Target pack: The Harpy Express: Extended 4.0.0-beta.1-h1.4.
+
+          **Bed wakeup test:** If a player is still asleep when the preparing
+          phase ends, the server wakes them before the game teleports players
+          from the lobby to the train. This is intended to prevent the player
+          being returned to the lobby bed and eliminated when they stand up.
+
+          The existing poison/scorpion compatibility changes are retained.
+          No unrelated role or poison behavior was intentionally changed.
+
+          **Validation:** The JAR was compiled and its patch registration checked
+          by GitHub Actions. The behavior has NOT yet been verified in a live
+          multiplayer match.
+
+          **Installation:** Back up the mod and server first. Shut down the
+          test server. Replace the existing Wathe Extended JAR in the mods
+          directory with this one; do not keep two versions installed together.
+          Match client/server mod versions as appropriate for your modpack.
+
+          This test release is published only by the MS Aurora project and is
+          not a release from the upstream mod author.
+          EOF
+          gh release create "$TAG" \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$GITHUB_SHA" \
+            --title "MS Aurora: Preparing Bed Wakeup Test V1" \
+            --notes-file release-notes.md \
+            --prerelease \
+            dist/WatheExtended-4.0.0-beta.1-h1.4-BedWake-Test-V1.jar \
+            dist/SHA256SUMS.txt
