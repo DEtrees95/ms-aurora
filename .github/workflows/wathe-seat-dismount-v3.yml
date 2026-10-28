@@ -8,7 +8,7 @@ on:
       - patches/wathe-bed-wakeup/**
       - patches/wathe-drink-sync/**
       - patches/wathe-seat-dismount/**
-      - .github/workflows/wathe-bed-drink-inventory-v2.yml
+      - .github/workflows/wathe-seat-dismount-v3.yml
   workflow_dispatch:
 
 permissions:
