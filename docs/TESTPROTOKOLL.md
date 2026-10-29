@@ -1,6 +1,8 @@
 # Testprotokoll
 
-Datum: 22.10.2026.
+Historischer automatischer Prüfstand: 22.10.2026. Die unten genannten 13 Prüfungen sind ein übernommenes Ergebnis, bei der Dokumentationsaktualisierung am 30.10.2026 nicht erneut ausgeführt.
+
+Der aktuelle, aus dem Chat bekannte Betriebsstand steht getrennt in [BEFEHLSVERIFIKATION.md](BEFEHLSVERIFIKATION.md). WorldEdit funktioniert laut Nutzer; CraftScript/Rhino und einzelne Importbefehle bleiben unbestätigt.
 
 ## Automatisch lokal bestanden
 

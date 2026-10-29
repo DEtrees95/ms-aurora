@@ -2,9 +2,18 @@
 
 Alle Endpunkte sind inklusive. Ein Quader wird als `(X,Y,Z) → (X,Y,Z)` angegeben. Materialien sind Betonblöcke mit Namensraum `minecraft:`. Bug zeigt nach +X, Heck nach −X. Beim Blick zum Bug liegt Backbord bei −Z, Steuerbord bei +Z.
 
-## Vollständiger Vergleich
+## Offener Koordinatenkonflikt – vor Weiterbau vermessen
 
-| Nr. | Farbe / Material | Bedeutung | Bisheriger 450×100-Entwurf | Neuer 270×60-Plan |
+| Quelle | X inklusive | Z inklusive |
+|---|---|---|
+| Alter Chat zur 270×60-Yacht | −134 … 135 | −29 … 30 |
+| Bestehendes GitHub-CraftScript | −135 … 134 | −30 … 29 |
+
+Beide Varianten ergeben 270×60 Blöcke, sind aber um einen Block versetzt. Keine Variante ist als vermessener Weltbestand bestätigt. Keine automatische Verschiebung, Neumarkierung oder Migration durchführen. Erst die tatsächlichen äußeren Blockkoordinaten und Mittellinien in Aurora-Meer ablesen, mit Screenshots dokumentieren und gemeinsam entscheiden. Alle nachfolgenden Skripttabellen beschreiben ausschließlich den Skriptplan.
+
+## Historischer Planvergleich (kein Aufmaß der Bauwelt)
+
+| Nr. | Farbe / Material | Bedeutung | Bisheriger 450×100-Entwurf | 270×60-Skriptplan |
 |---|---|---|---|---|
 | 1 | Weiß / white_concrete | Grundfläche, eine Lage | (−224,64,−49) → (225,64,50) | (−135,64,−30) → (134,64,29) |
 | 2 | Hellblau / light_blue_concrete | Doppelte Mittellinie | (−224,65,0) → (225,65,1) | (−135,65,−1) → (134,65,0) |

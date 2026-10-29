@@ -2,6 +2,12 @@
 
 Recherche: 22.10.2026. Ziel sind Minecraft Java 1.21.1 und ein ausdrücklich dafür veröffentlichtes WorldEdit-Fabric-JAR aus der 7.3-Reihe. Nicht aus einer aktuellen Dokumentationsüberschrift ableiten, dass die neueste WorldEdit-Version auf 1.21.1 läuft. Die tatsächlichen JAR-Versionen in einem Issue protokollieren.
 
+## Ergänzung zum tatsächlichen Projektstand – 30.10.2026
+
+WorldEdit funktioniert laut Nutzer auf dem Fabric-Server. Das belegt keine CraftScript-/Rhino-Funktion. Axiom und Litematica öffnen im Client; serverseitige Präsenz beider Mods ist eine Nutzerangabe, keine Funktionsprüfung. Siehe [Befehlsverifikation](BEFEHLSVERIFIKATION.md) und [Serverstand](SERVER-UND-IMPORT.md).
+
+Die folgenden Installations- und Skripthinweise sind historische technische Anleitungen. Sie wurden bei dieser Dokumentationsaktualisierung nicht am Server ausgeführt. Nicht auf der bestehenden Yacht anwenden; der Koordinatenkonflikt ist offen.
+
 ## Welche Automatisierung funktioniert?
 
 | Weg | Einordnung |

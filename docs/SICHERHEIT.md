@@ -1,5 +1,9 @@
 # Sicher arbeiten und zurücksetzen
 
+## Bestandsschutz – 30.10.2026
+
+In Aurora-Meer existieren bereits Maschinenraum und Rumpfschichten. Die folgenden historischen Markierungs-/Migrationsverfahren sind **keine Freigabe für diese bebaute Yacht**. Der [Koordinatenkonflikt](KOORDINATEN.md) muss zuerst durch Aufmaß geklärt werden. WorldGuard ist wegen eines Absturzes deaktiviert; es darf kein aktiver Gebietsschutz vorausgesetzt werden. Keine großflächigen Füll-, Lösch- oder Verschiebeaktionen am Bestand.
+
 ## Vor jeder Änderung
 
 1. Wartungsfenster: andere Spieler verlassen die Welt, Redstone-/Automatikbauten im Umfeld prüfen. Während Vorschau und Ausführung baut niemand im Bereich.

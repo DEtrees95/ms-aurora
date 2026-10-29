@@ -1,11 +1,31 @@
 # MS Aurora – Bauplanung für Minecraft
 
-Deutsches Mitbauer-Repository für Minecraft Java **1.21.1 / Fabric / WorldEdit 7.3.x**.
+Deutsches Mitbauer-Repository für Minecraft Java **1.21.1 / Fabric**. Der genaue installierte WorldEdit-Build ist noch zu erfassen.
 
 **Wir bauen gemeinsam auf dem vom Projektinhaber eingerichteten MS-Aurora-Server. Mitbauer sollen dort ausprobieren und mitbauen. Eine eigene Welt ist dafür nicht erforderlich.** [Server, Bauhilfen und Importbefehle](docs/SERVER-UND-IMPORT.md).
-Enthalten sind Bauplan, Farblegende und ein vorsichtiges CraftScript. **Keine fertige Yacht und kein Welt-Download.** Die 270 × 60-Variante ist ein vorgeschlagener neuer Plan; die bestehende Welt wurde nicht verändert.
+Enthalten sind Bauplan, Farblegende und ein vorsichtiges CraftScript. **Keine fertige Yacht und kein Welt-Download.** Die Yacht wird in **Aurora-Meer** mit dem Zielmaß **270 × 60 Blöcke** gebaut. Der vorhandene Maschinenraum und Unterwasserrumpf sind Bestand; das CraftScript ist ein älterer Markierungsplan und keine Anleitung zum erneuten Überbauen der Yacht.
 
-## Maße und Orientierung
+## Aktueller Stand – 30.10.2026
+
+- netcup Windows Server 2022; The Harpy Express: Extended **4.0.0-beta.1-h1.4**.
+- Maschinenraum: **X −100…−55, Z −14…15**, Boden Y55; zwei Motorgehäuse, drei Aggregate, trocken, dreiblöckige Quarztreppe und Deckenbeleuchtung.
+- Unterwasserrumpf: mehrlagige weiße Stufen, hervorstehender Maschinenraum und schwarze Kielhilfe. Ob die Unterseite vollständig geschlossen ist, bleibt offen.
+- WorldEdit und LuckPerms funktionieren laut Nutzer; WorldGuard ist wegen eines Absturzes deaktiviert.
+- WATHE Ready Area sowie Scenery-/Spectator-Teleporte eingerichtet.
+- Axiom und Litematica lassen sich im Client öffnen. Beide werden vom Nutzer auch als serverseitig vorhanden gemeldet; serverseitige Funktion nicht unabhängig geprüft. MaLiLib laut Nutzer nicht serverseitig vorhanden.
+
+[Baudokumentation und nächster kleiner Schritt](docs/BAUSTAND.md) · [Status und offene Prüfungen](docs/STATUS.md) · [Befehlsverifikation](docs/BEFEHLSVERIFIKATION.md).
+
+## Offener Koordinatenkonflikt – vor Weiterbau vermessen
+
+| Quelle | X inklusive | Z inklusive |
+|---|---|---|
+| Alter Chat zur 270×60-Yacht | −134 … 135 | −29 … 30 |
+| Bestehendes GitHub-CraftScript | −135 … 134 | −30 … 29 |
+
+Beide Varianten ergeben 270×60 Blöcke, sind aber um einen Block versetzt. Keine Variante ist als vermessener Weltbestand bestätigt. Keine automatische Verschiebung, Neumarkierung oder Migration durchführen. Erst die tatsächlichen äußeren Blockkoordinaten und Mittellinien in Aurora-Meer ablesen, mit Screenshots dokumentieren und gemeinsam entscheiden. Alle nachfolgenden Skripttabellen beschreiben ausschließlich den Skriptplan.
+
+## Historischer Skriptplan: Maße und Orientierung
 
 | Eigenschaft | Alter Entwurf | Neuer Plan |
 |---|---|---|
@@ -44,7 +64,11 @@ X96 ist ein neuer, gerundeter Designwert in Anlehnung an den alten Taper-Beginn 
 
 **Kreuzungen:** Weiß liegt separat auf Y64, Schwarz auf Y52. Auf Y65 gewinnt Orange gegenüber Hellblau, Grau gegenüber Hellblau/Gelb, Rot gegenüber Hellblau. Gelb endet vor Orange. Dadurch ist die hellblaue Linie an Heck, Orange und Bug bewusst unterbrochen. Ein Block kann nur eine Farbe haben.
 
-## Sicher starten
+## Historisches CraftScript nur auf geeignetem Testgelände
+
+**Nicht auf der bestehenden Yacht ausführen.** Die folgende Anleitung gehört zum älteren Markierungsplan. Sie ist kein nächster Bauschritt in Aurora-Meer.
+
+### Sicher starten
 
 1. [Sicherheits- und Backup-Anleitung](docs/SICHERHEIT.md) lesen. Zuerst in einer vollständigen Weltkopie testen.
 2. [Technik und Installation](docs/TECHNIK.md) beachten; CraftScripts benötigen einen zusätzlich erreichbaren Rhino-Motor.

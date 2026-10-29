@@ -4,13 +4,21 @@ Die MS Aurora entsteht gemeinsam auf dem vom Projektinhaber eingerichteten Minec
 
 Serveradresse, Zugang und Baurechte werden vom Betreiber bekanntgegeben; bisher ist hier keine bestätigte öffentliche Adresse hinterlegt. Das dokumentierte technische Ziel ist Minecraft Java 1.21.1 / Fabric. Die tatsächlich installierte vollständige Modliste ist noch nicht in diesem Repository dokumentiert.
 
-## Gerüst importieren
+## Gemeldeter Betriebsstand – 30.10.2026
+
+Minecraft Java 1.21.1 / Fabric, The Harpy Express: Extended 4.0.0-beta.1-h1.4, netcup Windows Server 2022, Bauwelt Aurora-Meer. WorldEdit und LuckPerms funktionieren laut Nutzer. WorldGuard bleibt nach einem Absturz deaktiviert; eine Ursache ist nicht belegt. WATHE Ready Area sowie Scenery-/Spectator-Teleporte sind eingerichtet. Exakte Builds, Moddateien und vollständige Befehlsprotokolle wurden hier nicht ausgelesen.
+
+Axiom und Litematica öffnen sich im Client. Der Nutzer meldet beide außerdem auf dem Server; das bestätigt weder die jeweiligen Serverfunktionen noch die Vollständigkeit ihrer Abhängigkeiten. MaLiLib ist laut Nutzer nicht serverseitig vorhanden. Aus dieser Angabe wird kein Server-Installationsbedarf abgeleitet. Client-Builds und Abhängigkeiten separat erfassen.
+
+[Verifikation und offene Nachweise](BEFEHLSVERIFIKATION.md).
+
+## Historische Importanleitung – nicht auf der bestehenden Yacht ausführen
 
 Es gibt zwei Möglichkeiten:
 - **Echte Gerüstblöcke auf dem Server:** Eine WorldEdit-Datei `.schem` wird vom Betreiber serverseitig geladen und eingefügt. Alle Spieler sehen die Blöcke und können daran weiterbauen. Für diesen Weg ist keine zusätzliche Litematica-Installation der Mitbauer erforderlich.
 - **Durchsichtige Bauvorlage:** Litematica mit passender MaLiLib-Abhängigkeit auf dem PC des jeweiligen Mitbauers. Das Hologramm ist eine lokale Anzeige; eine Platzierung wird dadurch nicht automatisch für alle geteilt.
 
-WorldEdit ist der vorgesehene Importweg für ein gemeinsames Gerüst aus echten Blöcken. Litematica ist eine mögliche ergänzende Bauhilfe; dies ist keine Behauptung, dass sie bereits installiert oder früher vereinbart wurde. Beide Wege benötigen eine tatsächlich bereitgestellte, geprüfte Gerüstdatei. Der bisherige CraftScript-Plan setzt nur die sieben Markierungen und liefert noch kein räumliches Rumpfgerüst.
+WorldEdit ist der vorgesehene Importweg für ein gemeinsames Gerüst aus echten Blöcken. Litematica ist inzwischen als im Client öffnende Bauhilfe gemeldet; ein vollständiger Platzierungsablauf ist noch nicht nachgewiesen. Beide Wege benötigen eine tatsächlich bereitgestellte, geprüfte Gerüstdatei. Der bisherige CraftScript-Plan setzt nur die sieben Markierungen und liefert noch kein räumliches Rumpfgerüst.
 
 ## Befehle für eine bereitgestellte WorldEdit-Datei
 
@@ -43,7 +51,7 @@ Laden ändert keine Weltblöcke. `//paste -n` wählt den Zielbereich ohne Einfü
 
 Zuerst technisch in einer vom Betreiber verwalteten Server-Weltkopie prüfen; anschließend wird gemeinsam auf dem eigentlichen Server gebaut. Diese technische Vorprüfung bedeutet nicht, dass Mitbauer eigene Welten betreiben sollen.
 
-## Bereits verfügbare Markierungsbefehle
+## Historische Markierungsbefehle – Serverfunktion nicht bestätigt
 
 Nach Installation und Konfiguration des vorhandenen CraftScripts:
 
@@ -58,9 +66,9 @@ Migration verlangt den vervollständigten Altplan, `oldReviewed: true`, passende
 
 | Komponente | Ort / Aufgabe | Stand |
 |---|---|---|
-| Fabric + passendes WorldEdit | Server: Bauwerkzeuge, .schem-Import, Undo | Dokumentierter Zielaufbau; installierte Builds nicht ausgelesen |
+| Fabric + passendes WorldEdit | Server: Bauwerkzeuge, .schem-Import, Undo | Fabric/WorldEdit laut Nutzer in Betrieb; genaue Builds nicht ausgelesen |
 | Rhino | Zusatzvoraussetzung nur für das CraftScript | Auf dem Server noch nicht verifiziert; für normalen .schem-Import nicht erforderlich |
-| Litematica + MaLiLib | Optional auf PCs: durchsichtige Bauvorlage | Keine installierte Version bestätigt |
+| Litematica + MaLiLib | Optional auf PCs: durchsichtige Bauvorlage | Client öffnet laut Nutzer; genaue Versionen und vollständiger Ablauf offen |
 
 Eine vollständige frühere Modliste ist im verfügbaren Gesprächsexport nicht enthalten. Keine zusätzlichen Bau-, Dekorations- oder Performance-Mods ungeprüft als bestehendes Serverpaket ausgeben. Vor einem verbindlichen Modpaket müssen tatsächliche Versionen und Abhängigkeiten feststehen.
 
